@@ -205,33 +205,33 @@ a1</code></pre>
 ## 
 ##           Reference
 ## Prediction    A    B    C    D    E
-##          A 1066   34    7    5    4
-##          B   24  692   22    4   17
-##          C    5   23  615   29   12
-##          D    0    0   31  593   19
-##          E    2   17   12   28  662
+##          A 1080   19   10    4    3
+##          B   21  699   20    2   17
+##          C    4   15  635   18   12
+##          D    0    3   38  582   20
+##          E    0   13   26   22  660
 ## 
 ## Overall Statistics
-##                                         
-##                Accuracy : 0.925         
-##                  95% CI : (0.916, 0.933)
-##     No Information Rate : 0.28          
-##     P-Value [Acc &gt; NIR] : &lt;2e-16        
-##                                         
-##                   Kappa : 0.905         
-##  Mcnemar's Test P-Value : 0.195         
+##                                        
+##                Accuracy : 0.932        
+##                  95% CI : (0.924, 0.94)
+##     No Information Rate : 0.282        
+##     P-Value [Acc &gt; NIR] : &lt;2e-16       
+##                                        
+##                   Kappa : 0.914        
+##  Mcnemar's Test P-Value : 0.009        
 ## 
 ## Statistics by Class:
 ## 
 ##                      Class: A Class: B Class: C Class: D Class: E
-## Sensitivity             0.972    0.903    0.895    0.900    0.927
-## Specificity             0.982    0.979    0.979    0.985    0.982
-## Pos Pred Value          0.955    0.912    0.899    0.922    0.918
-## Neg Pred Value          0.989    0.977    0.978    0.980    0.984
-## Prevalence              0.280    0.195    0.175    0.168    0.182
-## Detection Rate          0.272    0.176    0.157    0.151    0.169
+## Sensitivity             0.977    0.933    0.871    0.927    0.927
+## Specificity             0.987    0.981    0.985    0.981    0.981
+## Pos Pred Value          0.968    0.921    0.928    0.905    0.915
+## Neg Pred Value          0.991    0.984    0.971    0.986    0.984
+## Prevalence              0.282    0.191    0.186    0.160    0.181
+## Detection Rate          0.275    0.178    0.162    0.148    0.168
 ## Detection Prevalence    0.284    0.193    0.174    0.164    0.184
-## Balanced Accuracy       0.977    0.941    0.937    0.942    0.954</code></pre>
+## Balanced Accuracy       0.982    0.957    0.928    0.954    0.954</code></pre>
 <pre class="r"><code>a2&lt;-confusionMatrix(training$classe,predict(modFit1,training))
 a2</code></pre>
 <pre><code>## Confusion Matrix and Statistics
@@ -278,33 +278,33 @@ a3</code></pre>
 ## 
 ##           Reference
 ## Prediction    A    B    C    D    E
-##          A 1055   32   18    6    5
-##          B   28  654   41    7   29
-##          C   11   35  594   32   12
-##          D    2    6   35  571   29
-##          E    3    7   26   31  654
+##          A 1061   29   17    6    3
+##          B   27  655   43    7   27
+##          C    7   24  620   21   12
+##          D    2    8   33  567   33
+##          E    3   13   37   35  633
 ## 
 ## Overall Statistics
 ##                                         
-##                Accuracy : 0.899         
-##                  95% CI : (0.889, 0.909)
+##                Accuracy : 0.901         
+##                  95% CI : (0.892, 0.911)
 ##     No Information Rate : 0.28          
 ##     P-Value [Acc &gt; NIR] : &lt; 2e-16       
 ##                                         
-##                   Kappa : 0.873         
-##  Mcnemar's Test P-Value : 0.00812       
+##                   Kappa : 0.875         
+##  Mcnemar's Test P-Value : 0.000389      
 ## 
 ## Statistics by Class:
 ## 
 ##                      Class: A Class: B Class: C Class: D Class: E
-## Sensitivity             0.960    0.891    0.832    0.883    0.897
-## Specificity             0.978    0.967    0.972    0.978    0.979
-## Pos Pred Value          0.945    0.862    0.868    0.888    0.907
-## Neg Pred Value          0.984    0.975    0.963    0.977    0.977
-## Prevalence              0.280    0.187    0.182    0.165    0.186
-## Detection Rate          0.269    0.167    0.151    0.146    0.167
+## Sensitivity             0.965    0.898    0.827    0.892    0.894
+## Specificity             0.981    0.967    0.980    0.977    0.973
+## Pos Pred Value          0.951    0.863    0.906    0.882    0.878
+## Neg Pred Value          0.986    0.977    0.960    0.979    0.977
+## Prevalence              0.280    0.186    0.191    0.162    0.180
+## Detection Rate          0.270    0.167    0.158    0.145    0.161
 ## Detection Prevalence    0.284    0.193    0.174    0.164    0.184
-## Balanced Accuracy       0.969    0.929    0.902    0.930    0.938</code></pre>
+## Balanced Accuracy       0.973    0.933    0.903    0.934    0.933</code></pre>
 <pre class="r"><code>a4&lt;-confusionMatrix(training$classe,predict(modFit2,training))
 a4</code></pre>
 <pre><code>## Confusion Matrix and Statistics
@@ -349,7 +349,7 @@ pred2 &lt;- predict(modFit2,testing_data)
 #Check differences
 x11 &lt;- pred1==pred2
 x11</code></pre>
-<pre><code>##  [1]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
+<pre><code>##  [1]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE
 ## [12]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE</code></pre>
 <pre class="r"><code>pml_write_files = function(x){
   n = length(x)
@@ -361,7 +361,7 @@ x11</code></pre>
 # set working directory with setwd() and write files
 #setwd(&quot;.../coursera/practical machine learning/project/answers&quot;)
 #pml_write_files(pred1)</code></pre>
-<p>We see that the predictions disagree only in two cases: for sample 6 and 11.</p>
+<p>We see that the predictions disagree only in two cases: for sample 6 and 11. Using these predicions we get 19 out of the 20 predictions correct. The only incorrect prediction is for number 7.</p>
 
 
 </div>

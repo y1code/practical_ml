@@ -207,4 +207,4 @@ pml_write_files = function(x){
 
 ```
 
-We see that the predictions disagree only in two cases: for sample 6 and 11. Using these predicions we get 19 out of the 20 predictions correct. The only incorrect prediction is for number 7.
+We see that the predictions disagree only in two cases: for sample 6 and 11. Using these predicions we get 19 out of the 20 predictions correct. When submitting the predictions in the project submission the only incorrect prediction is for number 7.
