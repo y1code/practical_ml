@@ -181,7 +181,7 @@ dim(data)</code></pre>
 <pre class="r"><code>any(is.na(data_clean))</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <p>It is possible to remove all empty columns and columns containing NA by looping through the original data array as well.</p>
-<p>The cleaned data set now contains 54 variables (54 columns) and in order to determine which ones are actual useful predictors we use two strategies: using the nearZeroVar() function to identify and remove variables with low variability and principal component analysis (PCA) to identify correlation between the remaining variables and reduce the dimensional of the problem.</p>
+<p>The cleaned data set now contains 54 variables (54 columns) and in order to determine which ones are actual useful predictors we follow two strategies: apply the nearZeroVar() function to identify and remove variables with low variability or use principal component analysis (PCA) to identify correlation between the variables and reduce the dimensionality of the problem.</p>
 <p>The nearZeroVar() function is applied to the cleaned data and the variables with frequency ratio less than 2 are removed with the following code:</p>
 <pre class="r"><code>nzv &lt;- nearZeroVar(data_clean, saveMetrics=TRUE)
 nzv1&lt;- nzv[nzv$freqRatio &gt;2,]  
@@ -190,7 +190,7 @@ keeps &lt;- c(keeps,&quot;classe&quot;)
 clean_data &lt;- data[keeps]
 dim(clean_data)</code></pre>
 <pre><code>## [1] 19622     8</code></pre>
-<p>The new data set now consists of only 8 variables. For the training we use a random forest algorithm and to determine the expected out of sample accuracy we devide the original 19622 training entries into a training and validation set after fit a the random forest model and compute the accuracy of the fit on the validation and training sets. This is the done with the following code:</p>
+<p>The new data set now consists of only 8 variables. We choose random forests as the learning algorithm as they are an extremely robust ensemble learning method for classifcation. To perform cross validation and determine the expected out of sample accuracy we devide the original 19622 training entries into a training and validation set. We then fit the random forest model and compute the accuracy of the fit on the validation and training sets. This is the done with the following code:</p>
 <pre class="r"><code>#Divide the trainig data in training and testing to check how well the model performs
 inTrain &lt;- createDataPartition(y=clean_data$classe,p=0.8,list=FALSE)
 training&lt;- clean_data[inTrain,]
@@ -205,33 +205,33 @@ a1</code></pre>
 ## 
 ##           Reference
 ## Prediction    A    B    C    D    E
-##          A 1080   19   10    4    3
-##          B   21  699   20    2   17
-##          C    4   15  635   18   12
-##          D    0    3   38  582   20
-##          E    0   13   26   22  660
+##          A 1078   19   13    3    3
+##          B   21  683   32    5   18
+##          C    7   21  623   21   12
+##          D    2    0   29  597   15
+##          E    1   12   33   24  651
 ## 
 ## Overall Statistics
-##                                        
-##                Accuracy : 0.932        
-##                  95% CI : (0.924, 0.94)
-##     No Information Rate : 0.282        
-##     P-Value [Acc &gt; NIR] : &lt;2e-16       
-##                                        
-##                   Kappa : 0.914        
-##  Mcnemar's Test P-Value : 0.009        
+##                                         
+##                Accuracy : 0.926         
+##                  95% CI : (0.917, 0.934)
+##     No Information Rate : 0.283         
+##     P-Value [Acc &gt; NIR] : &lt; 2e-16       
+##                                         
+##                   Kappa : 0.906         
+##  Mcnemar's Test P-Value : 0.00586       
 ## 
 ## Statistics by Class:
 ## 
 ##                      Class: A Class: B Class: C Class: D Class: E
-## Sensitivity             0.977    0.933    0.871    0.927    0.927
-## Specificity             0.987    0.981    0.985    0.981    0.981
-## Pos Pred Value          0.968    0.921    0.928    0.905    0.915
-## Neg Pred Value          0.991    0.984    0.971    0.986    0.984
-## Prevalence              0.282    0.191    0.186    0.160    0.181
-## Detection Rate          0.275    0.178    0.162    0.148    0.168
+## Sensitivity             0.972    0.929    0.853    0.918    0.931
+## Specificity             0.986    0.976    0.981    0.986    0.978
+## Pos Pred Value          0.966    0.900    0.911    0.928    0.903
+## Neg Pred Value          0.989    0.984    0.967    0.984    0.985
+## Prevalence              0.283    0.187    0.186    0.166    0.178
+## Detection Rate          0.275    0.174    0.159    0.152    0.166
 ## Detection Prevalence    0.284    0.193    0.174    0.164    0.184
-## Balanced Accuracy       0.982    0.957    0.928    0.954    0.954</code></pre>
+## Balanced Accuracy       0.979    0.953    0.917    0.952    0.955</code></pre>
 <pre class="r"><code>a2&lt;-confusionMatrix(training$classe,predict(modFit1,training))
 a2</code></pre>
 <pre><code>## Confusion Matrix and Statistics
@@ -265,7 +265,7 @@ a2</code></pre>
 ## Detection Rate          0.284    0.194    0.174    0.164    0.184
 ## Detection Prevalence    0.284    0.194    0.174    0.164    0.184
 ## Balanced Accuracy       1.000    1.000    1.000    1.000    1.000</code></pre>
-<p>We see that the accuracy on the validation set with this approach is 92.7% percent while the accuracy for the training set is 100%.</p>
+<p>We see that the accuracy on the validation set with this approach is 92.5822 percent while the accuracy for the training set is 100%.</p>
 <p>For the second strategy, the PCA strategy, we use the following code:</p>
 <pre class="r"><code>## Use PCA to reduce dimensionality and see if accuracy can be improved
 inTrain &lt;- createDataPartition(y=data_clean$classe,p=0.8,list=FALSE)
@@ -278,33 +278,33 @@ a3</code></pre>
 ## 
 ##           Reference
 ## Prediction    A    B    C    D    E
-##          A 1061   29   17    6    3
-##          B   27  655   43    7   27
-##          C    7   24  620   21   12
-##          D    2    8   33  567   33
-##          E    3   13   37   35  633
+##          A 1055   26   19    7    9
+##          B   28  647   46   13   25
+##          C    5   34  602   27   16
+##          D    3    3   28  579   30
+##          E    3   18   20   31  649
 ## 
 ## Overall Statistics
-##                                         
-##                Accuracy : 0.901         
-##                  95% CI : (0.892, 0.911)
-##     No Information Rate : 0.28          
-##     P-Value [Acc &gt; NIR] : &lt; 2e-16       
-##                                         
-##                   Kappa : 0.875         
-##  Mcnemar's Test P-Value : 0.000389      
+##                                        
+##                Accuracy : 0.9          
+##                  95% CI : (0.891, 0.91)
+##     No Information Rate : 0.279        
+##     P-Value [Acc &gt; NIR] : &lt;2e-16       
+##                                        
+##                   Kappa : 0.874        
+##  Mcnemar's Test P-Value : 0.0127       
 ## 
 ## Statistics by Class:
 ## 
 ##                      Class: A Class: B Class: C Class: D Class: E
-## Sensitivity             0.965    0.898    0.827    0.892    0.894
-## Specificity             0.981    0.967    0.980    0.977    0.973
-## Pos Pred Value          0.951    0.863    0.906    0.882    0.878
-## Neg Pred Value          0.986    0.977    0.960    0.979    0.977
-## Prevalence              0.280    0.186    0.191    0.162    0.180
-## Detection Rate          0.270    0.167    0.158    0.145    0.161
+## Sensitivity             0.964    0.889    0.842    0.881    0.890
+## Specificity             0.978    0.965    0.974    0.980    0.977
+## Pos Pred Value          0.945    0.852    0.880    0.900    0.900
+## Neg Pred Value          0.986    0.974    0.965    0.976    0.975
+## Prevalence              0.279    0.186    0.182    0.167    0.186
+## Detection Rate          0.269    0.165    0.153    0.148    0.165
 ## Detection Prevalence    0.284    0.193    0.174    0.164    0.184
-## Balanced Accuracy       0.973    0.933    0.903    0.934    0.933</code></pre>
+## Balanced Accuracy       0.971    0.927    0.908    0.931    0.934</code></pre>
 <pre class="r"><code>a4&lt;-confusionMatrix(training$classe,predict(modFit2,training))
 a4</code></pre>
 <pre><code>## Confusion Matrix and Statistics
@@ -346,10 +346,16 @@ a4</code></pre>
 testing_data = read.csv(&quot;C://Users/Stefan Stefanov/Documents/coursera/practical machine learning/project/data/testing/pml-testing.csv&quot;)
 pred1 &lt;- predict(modFit1,testing_data)
 pred2 &lt;- predict(modFit2,testing_data)
-#Check differences
+pred1</code></pre>
+<pre><code>##  [1] B A B A A E C B A A B C B A E E A B B B
+## Levels: A B C D E</code></pre>
+<pre class="r"><code>pred2</code></pre>
+<pre><code>##  [1] B A B A A E C B A A A C B A E E A B B B
+## Levels: A B C D E</code></pre>
+<pre class="r"><code>#Check differences
 x11 &lt;- pred1==pred2
 x11</code></pre>
-<pre><code>##  [1]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE
+<pre><code>##  [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
 ## [12]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE</code></pre>
 <pre class="r"><code>pml_write_files = function(x){
   n = length(x)
@@ -361,7 +367,7 @@ x11</code></pre>
 # set working directory with setwd() and write files
 #setwd(&quot;.../coursera/practical machine learning/project/answers&quot;)
 #pml_write_files(pred1)</code></pre>
-<p>We see that the predictions disagree only in two cases: for sample 6 and 11. Using these predicions we get 19 out of the 20 predictions correct. The only incorrect prediction is for number 7.</p>
+<p>We see that the predictions disagree only in two cases: for samples 6 and 11. Using the results in the vector pred1 we find that 19 out of the 20 predictions are correct as indicated by the course website. The only incorrect prediction is for sample number 7.</p>
 
 
 </div>
