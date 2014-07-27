@@ -134,7 +134,7 @@ any(is.na(data_clean))
 It is possible to remove all empty columns and columns containing NA by looping through the original data array as well.
 
 
-The cleaned data set now contains 54 variables (54 columns) and in order to determine which ones are actual useful predictors we use two strategies: using the nearZeroVar() function to identify and remove variables with low variability and principal component analysis (PCA) to identify correlation between the remaining variables and reduce the dimensional of the problem.
+The cleaned data set now contains 54 variables (54 columns) and in order to determine which ones are actual useful predictors we follow two strategies: apply the nearZeroVar() function to identify and remove variables with low variability or use principal component analysis (PCA) to identify correlation between the variables and reduce the dimensionality of the problem.
 
 The nearZeroVar() function is applied to the cleaned data and the variables with frequency ratio less than 2 are removed with the following code:
 
@@ -147,7 +147,8 @@ clean_data <- data[keeps]
 dim(clean_data)
 
 ```
-The new data set now consists of only 8 variables. For the training we use a random forest algorithm and to determine the expected out of sample accuracy we devide the original 19622 training entries into a training and validation set after fit a the random forest model and compute the accuracy of the fit on the validation and training sets. This is the done with the following code:
+
+The new data set now consists of only 8 variables. We choose random forests as the learning algorithm as they are an extremely robust ensemble learning method for classifcation. To perform cross validation and determine the expected out of sample accuracy we devide the original 19622 training entries into a training and validation set. We then fit the random forest model and compute the accuracy of the fit on the validation and training sets. This is the done with the following code:
 
 
 ```{r nearZeroVar}
@@ -162,7 +163,7 @@ a2<-confusionMatrix(training$classe,predict(modFit1,training))
 a2
 ```
 
-We see that the accuracy on the validation set with this approach is 92.7% percent while the accuracy for the training set is 100%.
+We see that the accuracy on the validation set with this approach is `r a1$overall[1]*100` percent while the accuracy for the training set is `r a2$overall[1]*100`%.
 
 For the second strategy, the PCA strategy, we use the following code: 
 ```{r PCA}
@@ -181,7 +182,7 @@ a4
 
 ```
 
-
+We see that the accuracy on the validation set with the PCA approach is `r a3$overall[1]*100` percent while the accuracy for the training set is `r a4$overall[1]*100`%. Thus, we can expect to achieve an out-of-sample accuracy of `r a1$overall[1]*100`% with the nearZeroVar() method and `r a3$overall[1]*100`% with PCA.
 
 Finally, we apply the two model fits to the actual training data which consists of 20 samples and generate the text files containing the predictions. This is done with the following code:
 
@@ -190,6 +191,8 @@ Finally, we apply the two model fits to the actual training data which consists 
 testing_data = read.csv("C://Users/Stefan Stefanov/Documents/coursera/practical machine learning/project/data/testing/pml-testing.csv")
 pred1 <- predict(modFit1,testing_data)
 pred2 <- predict(modFit2,testing_data)
+pred1
+pred2
 #Check differences
 x11 <- pred1==pred2
 x11
@@ -207,4 +210,4 @@ pml_write_files = function(x){
 
 ```
 
-We see that the predictions disagree only in two cases: for sample 6 and 11. Using these predicions we get 19 out of the 20 predictions correct. When submitting the predictions in the project submission the only incorrect prediction is for number 7.
+Using the results in the vector pred1 we find that 19 out of the 20 predictions are correct as indicated by the course website. The only incorrect prediction is for sample number 7.
